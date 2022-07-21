@@ -12,7 +12,9 @@ module.exports = {
 
     modules: ['node_modules'],
   },
-
+  node: {
+    child_process: 'empty',
+  },
   module: {
     rules: [
       {
