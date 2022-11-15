@@ -4,25 +4,36 @@ import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 
-
 export default class RichTextEditor extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            EditorState: EditorState.createEmpty()
-        }
-    }
+    this.state = {
+      editorState: EditorState.createEmpty()
+    };
 
-    render() {
-        return (
-            <div>
-                <Editor
-                editorSate={this.state.EditorState}
-                wrapperClassName="demo-wrapper"
-                editorClassname="demo-editor"
-                />
-            </div>
-        )
-    }
+    this.onEditorStateChange = this.onEditorStateChange.bind(this);
+  }
+
+  onEditorStateChange(editorState) {
+    this.setState(
+      { editorState },
+      this.props.handleRichTextEditorChange(
+        draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+      )
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <Editor
+          editorState={this.state.editorState}
+          wrapperClassName="demo-wrapper"
+          editorClassname="demo-editor"
+          onEditorStateChange={this.onEditorStateChange}
+        />
+      </div>
+    );
+  }
 }
